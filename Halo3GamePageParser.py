@@ -5,39 +5,26 @@ import json
 import urllib.request
 import time
 
-##files = glob.glob('D:\HaloStats\warc_dump\halo.bungie.net\Stats\GameStatsHalo3.aspx*')
+
+
+##with open('D:\HaloStats\h3gameids.txt') as f:
+##    content = f.readlines()
 ##
-##
-##with open('D:\HaloStats\h3gameids.txt', 'w') as f:
-##    for item in files:
-##        f.write("%s\n" % item)
+##files = [x.strip() for x in content] 
 
-#file count = 50876
-
-with open('D:\HaloStats\h3gameids.txt') as f:
-    content = f.readlines()
-
-files = [x.strip() for x in content] 
-
-for game_id in files:#14892):
-    print(game_id)
-
-    #game_id = 'D:\HaloStats\GameStatsHalo3.aspx_gameguid=-100488725708954510'
+def parseHalo3Game(filepath, output_dir, working_dir):
+    game_id = filepath
+    
     with open(game_id, 'r', encoding="utf8") as myfile:
         h3_game_page=myfile.read().replace('\n', '')
 
     if(h3_game_page.count('We\'re Sorry. Unfortunately, we don\'t have a record of this game or we have temporarily turned off game statistics.') > 0):
         #print("No data for this game :(")
-        with open(r'D:\HaloStats\GameStats2\h3_no_data_games.log', 'a') as myfile:
+        with open(working_dir + "h3_no_data_games.log", 'a') as myfile:
                 myfile.write(str(game_id) + "\n")                 
     else:
-        with open(r'D:\HaloStats\GameStats2\h3_YES_data_games.log', 'a') as myfile:
+        with open(working_dir + "h3_yes_data_games.log", 'a') as myfile:
                 myfile.write(str(game_id) + "\n")      
-        maybe_has_medals_info = h3_game_page.count('medals')
-        if(maybe_has_medals_info > 3):
-            #print("This game might have medals info: " + str(game_id))
-            with open(r'D:\HaloStats\GameStats2\output.log', 'a') as myfile:
-                myfile.write("This game might have medals info: " + str(game_id) + "\n")
             
         game_info = h3_game_page[h3_game_page.find('ctl00_mainContent_bnetpgd_pnlGameDetails'):]
         game_info = game_info[:game_info.find('<li></li>')]
@@ -132,7 +119,8 @@ for game_id in files:#14892):
             else:
                 breakdown_list.append({'name':name,'weapons':weapons,'melee':melee,'grenades':grenades,'vehicle':vehicle,'other':other,'total_weapon_breakdown':weapon_list})
 
-        breakdown_list.pop(0) #first item is garbage
+        if len(breakdown_list) > 1:
+            breakdown_list.pop(0) #first item is garbage
     
         field_stats = h3_game_page[h3_game_page.find('ctl00_mainContent_bnetpgd_pnlFieldStats'):]
         field_stats = field_stats[:field_stats.find('</table>')]
@@ -174,7 +162,8 @@ for game_id in files:#14892):
             else:
                 field_stats_list.append({'name':name,'headshots':headshots,'best_spree':best_spree,'avg_life':avg_life,'medals':medals,'most_kills':mkb_list,'most_killed_by':mka_list})
 
-        field_stats_list.pop(0) #first element is garbage
+        if len(field_stats_list) > 1:
+            field_stats_list.pop(0) #first element is garbage
         
         if 'guid' in game_id:
             game_id = game_id[game_id.find("guid=")+5:]
@@ -248,5 +237,5 @@ for game_id in files:#14892):
         else:
             game_json = {'gameId':game_id,'map':map_name,'game':game_name,'playlist':playlist,'dateTime':datetime,'length':game_length,'files':game_files_count,'screens':screens_files_count,'clips':clips_files_count,'total_medal_counts':total_game_medals_list,'field_stats':field_stats_list,'breakdowns':breakdown_list,'carnageReport':carnage_report_json}
 
-        with open(r'D:\HaloStats\GameStats3\\' + str(game_id) + '.json', 'w') as fp:
+        with open(output_dir + str(game_id) + '.json', 'w') as fp:
             json.dump(game_json, fp)

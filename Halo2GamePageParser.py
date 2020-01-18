@@ -4,35 +4,12 @@ import json
 import urllib.request
 import time
 
-def getGame(gameId, url):
-    try:
-        url = url + str(gameId)
-        response = urllib.request.urlopen(url)
-        data = response.read()      
-        text = data.decode('utf-8')
-        return text
-    except:
-        time.sleep(60)
-        getGame(game_id, 'http://halo.bungie.net/Stats/GameStatsHalo2.aspx?gameid=')
+def parseHalo2Game(filepath, output_dir):
+    print(filepath)
+    game_id = filepath
 
-
-for j in range(26311,999999):#14892):
-    #try:
-    #if j % 50 == 0:
-    print(j)
-    game_id = j
-
-    h2_game_page = getGame(game_id, 'http://halo.bungie.net/Stats/GameStatsHalo2.aspx?gameid=')
-    if h2_game_page == None:
-        print("Trying archive.org")
-        h2_game_page = getGame(game_id, 'https://web.archive.org/web/1000/http://halo.bungie.net/Stats/GameStatsHalo2.aspx?gameid=')
-    
-
-    maybe_has_medals_info = h2_game_page.count('medals')
-    if(maybe_has_medals_info > 3):
-        print("This game might have medals info: " + str(game_id))
-        with open(r'D:\HaloStats\GameStats2\output.log', 'a') as myfile:
-            myfile.write("This game might have medals info: " + str(game_id) + "\n")
+    with open(game_id, 'r', encoding="utf8") as myfile:
+        h2_game_page=myfile.read().replace('\n', '')
         
     game_info = h2_game_page[h2_game_page.find('<div class="stats_overview">'):]
     game_info = game_info[:game_info.find('<div class="clear"></div> ')]
@@ -126,9 +103,5 @@ for j in range(26311,999999):#14892):
     else:
         game_json = {'gameId':game_id,'map':map_name,'game':game_name,'playlist':playlist,'dateTime':datetime,'carnageReport':carnage_report_json}
 
-    with open(r'D:\HaloStats\GameStats2\\' + str(game_id) + '.json', 'w') as fp:
+    with open(output_dir + str(game_id) + '.json', 'w') as fp:
         json.dump(game_json, fp)
-    #except:
-    #    print("ERROR. Skipping game " + str(game_id))
-    #    with open(r'D:\HaloStats\GameStats2\output.log', 'a') as myfile:
-     #       myfile.write("ERROR. Skipping game " + str(game_id) + "\n")

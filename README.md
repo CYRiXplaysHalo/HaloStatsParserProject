@@ -20,7 +20,7 @@ There are 846 warc files and in about a week I've done 6, so this will be a very
 - Make BungiePageFinder.py take in command line arguments
 - Set up process to collect and archive output json files.
 
-## Progress
+## Development
 - Main Script - DONE
 - GameStatsHalo2.aspx - DONE
   - These archives do not seem to ever capture the total game medals tab, so the code will trigger an exception to alert the user if the script ever does actually come across one, but I don't think that will happen. Even if it did, I'm not sure if it's useful to capture total game medals in general, let alone for some insignificantly small amount of the billion games played.
@@ -34,7 +34,6 @@ There are 846 warc files and in about a week I've done 6, so this will be a very
   - I'll admit I stopped player the Halo series after Halo 3, so correct me if I'm wrong here but it seems like these pages only tracked ODST campaign games (single player, and co-op). The archive did not capture the silveright content, so these pages pretty much only contain who played, what map they played, how long they played for, and what difficulty they were on.
   
 ## TODO
-- Do I parse user profiles? Are these game specific or do they span across all games?
 - What else is worth parsing that is saved in this archives, so that they only have to be processed once?
 
 ## Other Information

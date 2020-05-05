@@ -4,11 +4,15 @@ To parse the old xbox live halo game stats pages from halo.bungie.net archived b
 ## Goal
 Set up a script so that you can download an archive from here: https://archive.org/details/archiveteam_halo, extract it, and have the script automatically parser all game stat pages from it and convert them into json files.
 
+## Progress
+I am running this script on warc files as I have time and uploaded the parsed version of each warc file to here: https://archive.org/details/halo-stats-parser-project-files
+There are 846 warc files and in about a week I've done 6, so this will be a very timely process. Please reach out if you are interested in helping.
+
 ## How to use
 - You want to first download an archive from https://archive.org/details/archiveteam_halo.
 - After it is downloaded use warcat to extract the archive to a folder: https://github.com/chfoo/warcat.
 - Once you have all of the raw files in a folder, update lines 15-21 in BungiePageFinder.py to reflect the right directories and files you want to process.
-- Execute BungiePageFinder.py. This script takes a while to run. On my 8-year old rig it takes about a day.
+- Execute BungiePageFinder.py. This script takes a while to run. On my 8-year old rig it takes about a day. On my 3 year old laptop it takes about 8 hours.
 - Once it comples you will have json files for each page it parsed in your respective output directories.
 
 ## Next Steps

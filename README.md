@@ -6,6 +6,7 @@ Set up a script so that you can download an archive from here: https://archive.o
 
 ## Progress
 I am running this script on warc files as I have time and uploaded the parsed version of each warc file to here: https://archive.org/details/halo-stats-parser-project-files
+
 There are 846 warc files and in about a week I've done 6, so this will be a very timely process. Please reach out if you are interested in helping.
 
 ## How to use
